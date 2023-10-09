@@ -1,0 +1,50 @@
+Github: https://github.com/marcialarturo/devToken
+
+sponsors:
+- scroll: working on
+- arbitrum:
+- Thegraph
+- celo
+-Mantle
+- worldcoin  *
+- https://docs.ens.domains/dapp-developer-guide/quickstart#reverse-resolution
+-Neon: https://ethglobal.com/events/newyork2023/prizes/neon-evm-amn1d
+
+
+Requirements
+Create a social token contract in solidity
+ - allow user to create tokens erc20
+ - keep track of balace
+        keep track, how many eths each token has
+         total eths
+           totalEth/tokenTotalSupply
+        user deploys  an erc20 contract(factory cont)
+ - should be able to sale token
+ - should be able to buy token
+ - gets value of the token
+
+
+workflow:
+ 1.  create token
+ 2. create profile
+
+Screen Buy
+  form
+      amount of tokens to buy
+      display token prize & supply
+      total cost  preview
+      buy now btn
+
+Screen Sale
+   form
+      amount of tokens to buy
+      display token prize & supply
+      total eth return  preview
+      sale btn
+
+
+
+
+
+Wow, that was a lot of information. I enjoyed learning about Clearpepper. My favorite seccion is Clearpepper brand values and my fav line "simplicity over complexity".
+
