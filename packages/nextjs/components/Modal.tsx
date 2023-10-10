@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import React, { useEffect, useState } from "react";
+import { useScaffoldContractWrite, useScaffoldContractRead } from "~~/hooks/scaffold-eth";
+import { parseEther } from "viem";
+import { parse } from "path";
 
 function Modal({ setIsModalOpen }) {
   const [showModal, setShowModal] = useState(0);
@@ -7,6 +9,7 @@ function Modal({ setIsModalOpen }) {
   const [selectedBet, setSelectedBet] = useState("");
   const [total, setTotal] = useState(0);
   const [betAmount, setBetAmount] = useState(0);
+  console.log("🚀 ~ file: Modal.tsx:12 ~ Modal ~ betAmount:", betAmount);
   const [title, setTitle] = useState("Manchester vs Chelsea");
   // const { contract, account, allBets, setAllBets } = useContext(MyAppContext)
   // console.log('What are all allBets:', allBets)
@@ -43,12 +46,25 @@ function Modal({ setIsModalOpen }) {
   const userWallet = "0xDA261916E9eD8628f9EC0a67DfC85885036a82A7";
   const dateToWithdraw = 3363171270;
 
-  const { writeAsync, isLoading, isMining } = useScaffoldContractWrite({
-    contractName: "Crowdfunding",
-    functionName: "AddFamilyMember",
-    args: [memberName, userWallet, dateToWithdraw],
+  const amount = 1;
+  const value = 1 * 10 ** 18;
+
+  const freelanceContractAddress = "0x4D59AA69166BbA3F26C3860414a5D873e867380a";
+
+  const { data: calculatePricePerToken } = useScaffoldContractRead({
+    contractName: "FreelanceToken",
+    functionName: "calculateTokenPrice",
+    args: [betAmount],
+  });
+  console.log("_____calculatePricePerToken:", calculatePricePerToken?.toString());
+
+  const { writeAsync: buyNow, isLoading, isMining } = useScaffoldContractWrite({
+    contractName: "FreelanceToken",
+    functionName: "buyTokens",
+    args: [freelanceContractAddress, betAmount],
     // For payable functions, expressed in ETH
-    // value: "0.01",
+    value: calculatePricePerToken?.toString(),
+    // value: calculatePricePerToken?.toString(),
     // The number of block confirmations to wait for before considering transaction to be confirmed (default : 1).
     blockConfirmations: 1,
     // The callback function to execute when the transaction is confirmed.
@@ -57,71 +73,6 @@ function Modal({ setIsModalOpen }) {
     },
   });
   return (
-    // <div className="fixed flex justify-center items-center  inset-0 z-50">
-    //   <div className="modal-container  bg-white w-1/2 mx-auto  my-8 px-4 rounded-lg shadow-lg">
-    //     <button
-    //       onClick={() => setIsModalOpen(true)}
-    //       className="close-modal absolute top-0 right-0 p-4 cursor-pointer text-xl bg-red-500"
-    //     >
-    //       ×
-    //     </button>
-
-    //     <p>Modal</p>
-    //   </div>
-    // </div>
-
-    // <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-md bg-gray-300">
-    //   <div className="bg-white p-8 rounded shadow-lg">
-    //     <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
-    //       <h2 className="text-xl font-semibold mb-4">Create Fund</h2>
-
-    //       <div className="mb-4">
-    //         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-    //           Name
-    //         </label>
-    //         <input
-    //           type="text"
-    //           id="name"
-    //           value={name}
-    //           onChange={e => setName(e.target.value)}
-    //           className="mt-1 p-2 w-full border rounded-md"
-    //           required
-    //         />
-    //       </div>
-
-    //       <div className="mb-4">
-    //         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-    //           Member Wallet
-    //         </label>
-    //         <input
-    //           type="text"
-    //           id="name"
-    //           value={memberWallet}
-    //           onChange={e => setMemberWallet(e.target.value)}
-    //           className="mt-1 p-2 w-full border rounded-md"
-    //           required
-    //         />
-    //       </div>
-
-    //       <div className="flex justify-between">
-    //         <button
-    //           onClick={() => setIsModalOpen(true)}
-    //           className="mt-4 bg-gray-100 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded"
-    //         >
-    //           Never mind
-    //         </button>
-
-    //         <button
-    //           type="submit"
-    //           className="mt-4  bg-blue-500 hover:bg-gray-400 font-semibold py-2 px-4 rounded text-white"
-    //           onClick={writeAsync}
-    //         >
-    //           Add Member
-    //         </button>
-    //       </div>
-    //     </form>
-    //   </div>
-    // </div>
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="relative w-auto my-6 mx-auto max-w-3xl">
@@ -155,8 +106,12 @@ function Modal({ setIsModalOpen }) {
                 {/* GRID */}
 
                 <div className="grid grid-cols-2">
-                  <div className="justify items-center flex "></div>
-                  <div className="flex">
+                  <div className="justify items-center flex ">
+                    <p className="text-sm text-slate-500 leading-relaxed">
+                      Price per token: {calculatePricePerToken?.toString() || "0"}
+                    </p>
+                  </div>
+                  <div className="flex justify-between">
                     <p className="text-sm text-slate-500 leading-relaxed">Please enter all fields</p>
                   </div>
                 </div>
@@ -176,13 +131,6 @@ function Modal({ setIsModalOpen }) {
                 <div className="grid grid-cols-2 p-6">
                   <div className="justify items-center flex overflow-x-hidden overflow-y-auto">
                     <p className="text-lg">Prizes</p>
-
-                    {/* <img
-                      style={{ width: "25px", height: "25px" }}
-                      src="/group.png"
-                      alt="coin"
-                      className="m-auto w-[400px] h-[400px]"
-                    /> */}
                   </div>
 
                   <div>
@@ -212,14 +160,14 @@ function Modal({ setIsModalOpen }) {
               <button
                 className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                onClick={() => setShowModal(false)}
+                onClick={() => setIsModalOpen(false)}
               >
                 Never mind
               </button>
               <button
                 className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
-                // onClick={joinBet}
+                onClick={buyNow}
               >
                 Buy Tokens
               </button>

@@ -1,17 +1,20 @@
+chose
+   Freelancer    
+
+
+
+0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2
+0x5B38Da6a701c568545dCfcB03FcB875f56beddC4
+
+
+
 ## SkillLink
 
-create a Gnosis Safe
+### create a Gnosis Safe
     - then you set requirements like who can vote, amount of votes for a transaction to process(wallet, u can assign as many as want)
     - u can assign as many as want, min 3 wallets
                 - assined 3 wallet
                       - lose access to one wallet
-
-
-
-    assign
-
-     put wallet
-
 
 
 
@@ -28,8 +31,42 @@ user2 comes & buys 1000 tokens
 1 dev can create a maxSupply = 1000  => $1 e/token
 
 
+# CHATGPT
+write a solidity contract for freelance developers.
+ - it should allow every freelancer to create 1000 tokens only once per each user.
+  - The contract holds & makes the tokens public for companies to buy/sell them
+ - It should keep track of how many tokens each freelancer have
+ - The token initial price should be $us dollar per token. Then for every 100 tokens sale should increase 20%
+- it should allow other users(companies, managers) to buy tokens
+- it should allow other users(companies, managers) to sale tokens
 
-write a solidity contract for a social developer  token. Developers should be able to create
+
+User Story Frelancer:
+ - Frelancer Joe comes & creates a maxSupply of 1000 (only for Joe)
+ - The contract holds & makes them public for companies to buy/sell them
+      JoesContractSupply = 1000 -10
+      JoesContractSupply = 990
+
+User Story Companiies:
+ - Company A  comes & buys 100 Joes' tokens
+    CompanyA holds 10 joes tokens
+
+
+- 2 Users
+    - Developer user
+          - should be able to:
+                - able to login
+                - create a profile w protfolio, skills,
+
+
+    - Hiring manager user
+        - message(xmtp) requires token x amount to contact user(buy tokens)
+
+
+
+
+
+     social developer . Developers should be able to create
 it's token with max supply of 1000 tokens. Users should be able to buy and sale tokens
 reuses this code:
     function getPrice(uint256 supply, uint256 amount) public pure returns (uint256) {

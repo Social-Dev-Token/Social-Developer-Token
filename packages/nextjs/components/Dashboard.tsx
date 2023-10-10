@@ -15,7 +15,7 @@ function Dashboard() {
         {users?.length > 0 ? (
           users.map((user: any) => (
             <div
-              className="px-4 py-4  border border-solid border-gray-300 shadow-md grid-item text-center  justify-center items-center"
+              className="px-4 py-4  border border-solid border-gray-300 shadow-md grid-item text-center  -center items-center"
               key={user.user_id}
             >
               <p className="mt-[0px] mb-[1px] font-semibold text-right font-lg">{`$${user.price}/hr`}</p>
